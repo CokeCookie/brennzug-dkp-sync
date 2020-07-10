@@ -81,9 +81,18 @@ async function updateDKPSheet(dkpSheet: GoogleSpreadsheetWorksheet, evaluation: 
       : 10;
     const dkpPaidForItems = items.reduce((carry, item) => carry + Number(item.givenTo.dkp), 0);
     const dkpAfterRaid = currentDkp - dkpPaidForItems;
-    let dkpForNextRaid = dkpPaidForItems === 0
-      ? dkpAfterRaid + 1
-      : Math.min(dkpAfterRaid, 10);
+    let dkpForNextRaid = -100;
+      
+    if (dkpPaidForItems === 0){
+        dkpForNextRaid = dkpAfterRaid + 1;
+    }
+    else if (dkpPaidForItems <= 10){
+        dkpForNextRaid = currentDkp;
+    }
+    else{
+        dkpForNextRaid = Math.min(dkpAfterRaid, 10);
+    }
+    
     let recentLootText = `Vorherige DKP: ${currentDkp}`;
 
     if (dkpForNextRaid < 10) {
