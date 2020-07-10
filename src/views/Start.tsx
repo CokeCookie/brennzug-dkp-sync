@@ -1,5 +1,5 @@
 import { InboxOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input, message, Upload } from 'antd';
+import { Button, Checkbox, Form, Input, message, Upload, Typography, Row, Col } from 'antd';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 import React, { useCallback, useState } from 'react';
 import { SHEET_URL_REGEX, STORAGE_KEYS } from '../constants';
@@ -7,6 +7,7 @@ import { useAsyncEffect } from '../hooks/useAsyncEffect';
 import { useLoadSheet } from '../hooks/useLoadSheet';
 import { getFileAsFileListFromEvent } from '../utils/antd';
 import { readJsonFromFile } from '../utils/file';
+import preval from 'preval.macro';
 
 
 type Props = {
@@ -127,19 +128,30 @@ export function Start(props: Props) {
           </Form.Item>
         </Form.Item>
 
-        <Form.Item style={{ textAlign: 'right' }}>
-          <Form.Item
-            name="persist"
-            valuePropName="checked"
-            noStyle
-          >
-            <Checkbox>Auf diesem Gerät speichern</Checkbox>
-          </Form.Item>
+        <Row justify="space-between">
+            <Col span={8}>
+                <div style={{ display: 'flex', justifyContent: 'left', alignItems: 'center' }}>
+                    <Typography.Text mark style={{ textAlign: 'left' }}>
+                        Build Date: {preval`module.exports = new Date().toLocaleString();`}
+                    </Typography.Text>
+                </div>
+            </Col>
+            <Col span={8}>
+                <div style={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
+                    <Form.Item
+                        name="persist"
+                        valuePropName="checked"
+                        noStyle
+                    >
+                        <Checkbox>Auf diesem Gerät speichern</Checkbox>
+                    </Form.Item>
 
-          <Button type="primary" htmlType="submit" loading={isLoading}>
-            Weiter
-          </Button>
-        </Form.Item>
+                    <Button type="primary" htmlType="submit" loading={isLoading}>
+                        Weiter
+                    </Button>
+                </div>
+            </Col>
+        </Row>
       </Form>
     </>
   );
