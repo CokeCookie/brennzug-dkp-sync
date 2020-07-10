@@ -8,6 +8,7 @@ import { useLoadSheet } from '../hooks/useLoadSheet';
 import { getFileAsFileListFromEvent } from '../utils/antd';
 import { readJsonFromFile } from '../utils/file';
 import preval from 'preval.macro';
+import packageJson from '../../package.json';
 
 
 type Props = {
@@ -129,14 +130,17 @@ export function Start(props: Props) {
         </Form.Item>
 
         <Row justify="space-between">
-            <Col span={8}>
+            <Col span={10}>
                 <div style={{ display: 'flex', justifyContent: 'left', alignItems: 'center' }}>
                     <Typography.Text mark style={{ textAlign: 'left' }}>
-                        Build Date: {preval`module.exports = new Date().toLocaleString();`}
+                        Build: {preval`
+                            const dateFormat = require('dateformat');
+                            module.exports = dateFormat(new Date(), "ddd mmm dd yyyy HH:MM:ss Z");
+                        `} (v{packageJson.version})
                     </Typography.Text>
                 </div>
             </Col>
-            <Col span={8}>
+            <Col span={10}>
                 <div style={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
                     <Form.Item
                         name="persist"
