@@ -1,5 +1,5 @@
 import { ExclamationCircleOutlined } from '@ant-design/icons/lib';
-import { Alert, Button, Tabs, Form, Modal, Card } from 'antd';
+import { Alert, Button, Tabs, Form, Modal, Card, Typography } from 'antd';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 import React, { useCallback } from 'react';
 import { Block } from '../components/Block';
@@ -7,6 +7,8 @@ import { ExportJsonCodeContainer } from '../components/ExportJsonCodeContainer';
 import { ImportRaidEvaluationForm } from '../components/ImportRaidEvaluationForm';
 import { STORAGE_KEYS } from '../constants';
 import { getDkpWorksheet } from '../utils/sheets';
+import preval from 'preval.macro';
+import packageJson from '../../package.json';
 
 
 type Props = {
@@ -95,6 +97,16 @@ export function Sheet(props: Props) {
               </Form.Item>
             </Block>
           </Card>
+          <p></p>
+          <div style={{ display: 'flex', justifyContent: 'left', alignItems: 'center' }}>
+            <Typography.Text mark style={{ textAlign: 'left' }}>
+                Build: {preval`
+                    const dateFormat = require('dateformat');
+                    module.exports = dateFormat(new Date(), "ddd mmm dd yyyy HH:MM:ss Z");
+                `} (v{packageJson.version})
+            </Typography.Text>
+          </div>
+          
         </Tabs.TabPane>
       </Tabs>
     </>
